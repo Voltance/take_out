@@ -38,8 +38,9 @@ public class CategoryController {
     @DeleteMapping
     public R<String> delete(Long id) {
         log.info("删除分类{}",id);
-        categoryService.removeById(id);
-        return R.success("删除成功");
+//        categoryService.removeById(id);
+        categoryService.remove(id);
+        return R.success("分类删除成功");
     }
 
     @PutMapping
@@ -52,7 +53,7 @@ public class CategoryController {
     @GetMapping("/list")
     public R<List<Category>> list(Category category) {
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(category != null ,Category::getType, category.getType());
+        queryWrapper.eq(category.getType() != null ,Category::getType, category.getType());
         queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
         List<Category> list = categoryService.list(queryWrapper);
         return R.success(list);
